@@ -1,0 +1,860 @@
+FORMAT: 1A
+HOST: http://api.photonews.me
+
+# PhotoNews API
+
+An API for Photography News
+
+# Group Photos
+
+## Photo [/photos/{id}]
+
+A single Photo object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Photo to perform action with.
+
++ Model (application/json)
+
+        {
+          "created_at": "theEnd",
+          "id": "theLastOneEver",
+          "name": "DeepThought",
+          "caption": "",
+          "thumbnail_url": "",
+          "image_url": "",
+          "width": "",
+          "height": "",
+          "meta": {}
+        }
+
+### Retrieve a Photo [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
++ Response 200 (application/json)
+
+            {
+                "photos": [
+                    {
+                        "created_at": "theEnd",
+                        "id": "theLastOneEver",
+                        "name": "DeepThought",
+                        "caption": "",
+                        "thumbnail_url": "",
+                        "image_url": "",
+                        "width": "",
+                        "height": "",
+                        "meta": {},
+                        "href": "https://api.photonews.me/photos/theLastOneEver"
+                    }
+                ]
+            }
+
+### Update a Photo [PUT]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+
+    + Body
+
+            {
+                "photos": [{
+                  "name": "ShallowThought"
+                }]
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "photos": [
+                    {
+                        "created_at": "theEnd",
+                        "id": "theLastOneEver",
+                        "name": "ShallowThought",
+                        "caption": "",
+                        "thumbnail_url": "",
+                        "image_url": "",
+                        "width": "",
+                        "height": "",
+                        "meta": {},
+                        "href": "https://api.photonews.me/photos/theLastOneEver"
+                    }
+                ]
+            }
+
+### Remove a Photo [DELETE]
+
++ Response 204
+
+## Photo Collection [/stories/{id}/photos]
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Story that the photos belong to
+
+### List all Photos [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "photos": []
+            }
+
+### Create a Photo [POST]
+
+Does not accept binary files, only URLs in the JSON fields.
+The images are then downloaded -- mimetypes and metadata extracted etc.
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
+    + Body
+
+            {
+                "photos": [{
+                  "name": "HollowThought",
+                  "image_url": "",
+                  "thumbnail_url": "optional"
+                }]
+            }
+
++ Response 201 (application/json)
+    + Body
+
+            {
+                "photos": [
+                  {
+                    "name": "HollowThought",
+                    "image_url": "",
+                    "thumbnail_url": "optional",
+                    "caption": "",
+                    "meta": {},
+                    "href": "https://api.photonews.me/photos/theLastOneEver"
+                  }
+                ]
+            }
+
+# Group Stories
+
+## Frontpage [/stories?page={page}]
+
+### Return all the stories on the frontpage [GET]
+
++ Request (application/json)
+    + Parameters
+        + page (optional, number, `0`) ... Page number. Zero indexed i.e 0 is first page.
+
+    + Headers
+
+            X-Token: TestKey
+
++ Response 200 (application/json)
+    + Body
+
+            {
+              "stories": []
+            }
+
+## Recent Stories [/stories/recent]
+
+### Get Recent Stories [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
++ Response 200 (application/json)
+    + Body
+
+            {
+              "stories": []
+            }
+
+## Search [/stories/search?query={query}{&page}]
+
+### Search Stories [GET]
+
++ Request (application/json)
+    + Parameters
+        + query (required, string, `iceland`)  ... Search query.
+        + page  (optional, number, `0`) ... Page number. Zero indexed i.e 0 is first page.
+
+    + Headers
+
+            X-Token: TestKey
+
++ Response 200 (application/json)
+    + Body
+
+            {
+              "stories": []
+            }
+
+## Story [/stories/{id}]
+
+A single Story object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Story
+
++ Model (application/json)
+
+        {
+          "created_at": "theEnd",
+          "id": "theLastOneEver",
+          "title": "Pretty Photos of Iceland Roads",
+          "url": "http://localhost:42/pretty-photos-of-iceland-roads",
+          "vote_count": 42,
+          "photo_url": "",
+          "photos": [],
+          "comments": []
+        }
+
+### Retrieve a Story [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
++ Response 200 (application/json)
+    + Body
+
+            {
+
+              "links": {
+                "photos": {
+                  "href": https://api.photonews.me/photos/{stories.photos.id}",
+                  "type": "photos"
+                },
+                "stories.photos": {
+                  "href": "https://api.photonews.me/stories/{stories.id}/photos",
+                  "type": "photos"
+                }
+              },
+              "stories": [
+                {
+                  "created_at": "theEnd",
+                  "id": "theLastOneEver",
+                  "title": "Pretty Photos of Iceland Roads",
+                  "url": "http://localhost:42/pretty-photos-of-iceland-roads",
+                  "vote_count": 42,
+                  "photo_url": "",
+                  "links" {
+                    "photos": [],
+                    "comments": []
+                  }
+                }
+              ]
+            }
+
+### Update a Story [PUT]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
+    + Body
+
+            {
+              "stories": [{
+                "title": "Ugly Photos of Iceland Roads"
+              }]
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+
+              "links": {
+                "photos": {
+                  "href": https://api.photonews.me/photos/{stories.photos.id}",
+                  "type": "photos"
+                },
+                "stories.photos": {
+                  "href": "https://api.photonews.me/stories/{stories.id}/photos",
+                  "type": "photos"
+                }
+              },
+              "stories": [
+                {
+                  "created_at": "theEnd",
+                  "id": "theLastOneEver",
+                  "title": "Ugly Photos of Iceland Roads",
+                  "url": "http://localhost:42/pretty-photos-of-iceland-roads",
+                  "vote_count": 42,
+                  "photo_url": "",
+                  "links" {
+                    "photos": [],
+                    "comments": []
+                  }
+                }
+              ]
+            }
+
+### Remove a Story [DELETE]
+
++ Response 204
+
+## Story Upvote [/stories/{id}/upvote]
+
+### Check if a user has upvoted [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
++ Response 200 (application/json)
+      + Body
+
+              {
+                "stories": [{
+                  "upvote": "boolean"
+                }]
+              }
+
+### Upvote [PUT]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
++ Response 204
+
+### Undo an upvote [DELETE]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
++ Response 204
+
+# Group Comments
+
+## Comment Collection [/stories/{id}/comments]
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Story that the comment sbelong to
+
+### List all [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "comments": []
+            }
+
+### Comment on a story [POST]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "comments": [{
+                    "body": "I changed my mind"
+                }]
+            }
+
+## Comment [/comments/{id}]
+
+A single Comment object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Comment.
+
++ Model (application/json)
+
+        {
+          "id": "theLastOneEver",
+          "created_at": "",
+          "depth": 1,
+          "vote_count": 42,
+          "body": "Literally the worst photo I have ever seen. These resources are completely useless. Why cant
+                   there be decent perfect free photo place where I can get every photo I want without
+                   restrictions or paying anything. It is 2014 damnit. Not like taking a photo is that hard"
+        }
+
+### Retrieve a Comment [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TestKey
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "links": {
+                  "comments.comments" {
+                    "href": "https://api.photonews.me/comments/{comments.id}/comments",
+                    "type": "comments"
+                  }
+                },
+                "comments": [
+                    {
+                        "id": "theLastOneEver",
+                        "created_at": "",
+                        "depth": 1,
+                        "vote_count": 42,
+                        "body": "literally the worst...",
+                        "links": [
+                          "comments": []
+                        ]
+                    }
+                ]
+            }
+
+### Update a Comment [PUT]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+
+    + Body
+
+            {
+                "comments": [{
+                    "body": "I changed my mind"
+                }]
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "comments": []
+            }
+
+### Remove a Comment [DELETE]
+
++ Response 204
+
+## Nested Comments [/comments/{id}/comments]
+
+All the comments nested inside a comment
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Comment to get the nested comments from
+
+### List all [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "comments": []
+            }
+
+### Comment on a comment [POST]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+
++ Response 200 (application/json)
+    + Body
+
+            {
+                "comments": [{
+                    "body": "I changed my mind"
+                }]
+            }
+
+# Group Authentication
+
+## Sessions [/auth/sessions]
+
+### Create a session [POST]
+
+Creates a session
+
++ Request (application/json)
+
++ Response 201 (application/json)
+    + Body
+
+            {
+              "users": [
+                {
+                  "links": {
+                    "self": {
+                      "href": "https://api.photonews.me/users/541ce18edf465e054b000001"
+                    },
+                    "tokens": [
+                      "541ce18edf465e054b000002",
+                      "541ce18edf465e054b000003"
+                    ]
+                  },
+                  "name": "bob",
+                  "email": "test@test.com"
+                }
+              ],
+              "linked": {
+                "tokens": [
+                  {
+                    "href": "https://api.photonews.me/token/541ce18edf465e054b000002",
+                    "id": "541ce18edf465e054b000002",
+                    "access_token": "4845d193e3dc9914ed306db62d055bc8",
+                    "expires_at": "2014-10-19",
+                    "created_at": "2014-09-20T02:08:14.199Z",
+                    "updated_at": "2014-09-20T02:08:14.199Z"
+                  },
+                  {
+                    "href": "https://api.photonews.me/token/541ce18edf465e054b000003",
+                    "id": "541ce18edf465e054b000003",
+                    "access_token": "TestKey",
+                    "expires_at": "2014-10-19",
+                    "created_at": "2014-09-20T02:08:14.201Z",
+                    "updated_at": "2014-09-20T02:08:14.201Z"
+                  }
+                ]
+              }
+            }
+
+## Twitter Access Token [/auth/twitter_access_token/callback?{?token,token_secret,access_token}]
+
+A twitter authentication endpoint. Only utilized internally.
+
++ Parameters
+    + token        (required, string, `qwerty`) ... OAuth Token
+    + token_secret (required, string, `qwerty`) ... OAuth Token Secret
+    + access_token (required, string, `qwerty`) ... OAuth Access Token
+
+### Create a user or authorize via twitter [POST]
+
++ Request (application/json)
+    + Body
+
++ Response 201 (application/json)
+    + Body
+
+            {
+                "links": {
+                    "users.tokens": {
+                      "href": "https://api.photonews.me/authentication/tokens",
+                      "type": "tokens"
+                  }
+                },
+
+                "users": [{
+                    "uid": "uidd",
+                    "email": "bob",
+                    "username": "b",
+                    "name": "Bob of Wug",
+                    "avatar": "",
+                    "links": {
+                        "tokens": [""]
+                    }
+                }],
+
+                "linked": {
+                    "tokens": [
+                        {}
+                    ]
+                }
+            }
+
+## OAuthIO endpoint [/auth/oauthio/{provider}/callback{?code,state}]
+
+An OAuth.io authentication point
+
++ Parameters
+    + provider (required, string, `github`) ... The OAuth.io Provider to use. Obviously must have been enabled on OAuth.io
+    + code     (required, string, `qwerty`) ... OAuth.io Token Code
+    + state    (required, string, `qwerty`)  ... OAuth.io State string
+
+### Create or authorize a user via OAuthIO [POST]
+
++ Request (application/json)
+    + Body
+
++ Response 201 (application/json)
+    + Body
+
+            {
+                "links": {
+                    "users.tokens": {
+                      "href": "https://api.photonews.me/authentication/tokens",
+                      "type": "tokens"
+                  }
+                },
+
+                "users": [{
+                    "uid": "uidd",
+                    "provider": "basic",
+                    "email": "bob",
+                    "username": "b",
+                    "name": "Bob of Wug",
+                    "avatar": "",
+                    "links": {
+                        "tokens": [""]
+                    }
+                }],
+
+                "linked": {
+                    "tokens": [
+                        {}
+                    ]
+                }
+            }
+
+## Users Collection [/users]
+
+### Create a User [POST]
+
++ Request (application/json)
+    + Body
+
+            {
+                "users": [{
+                    "password": "lengthypassword",
+                    "email":    "bob@2052.me",
+                    "name": "Bob of Wug",
+                    "username": "bobofwug"
+                }]
+            }
+
++ Response 201 (application/json)
+    + Body
+
+            {
+              "users": [
+                {
+                  "links": {
+                    "self": {
+                      "href": "https://api.photonews.me/users/541ceb1edf465e1b95000002"
+                    },
+                    "tokens": [
+                      "541ceb1edf465e1b95000003"
+                    ]
+                  },
+                  "name": "Bob of Wug",
+                  "email": "bob@2052.me",
+                  "avatar": "http://www.gravatar.com/avatar/bd0261dd040c14db68c8e8b9ce1dbb23?s=4"
+                }
+              ],
+              "linked": {
+                "tokens": [
+                  {
+                    "href": "https://api.photonews.me/token/541ceb1edf465e1b95000003",
+                    "id": "541ceb1edf465e1b95000003",
+                    "access_token": "53b345503e5e1bccf7d0d8d15480a2f1",
+                    "expires_at": "2014-10-19",
+                    "created_at": "2014-09-20T02:49:02.430Z",
+                    "updated_at": "2014-09-20T02:49:02.430Z"
+                  }
+                ]
+              }
+            }
+
+## User [/users/{id}]
+
+A single User object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the User to perform action with. Has example value.
+
+### Retrieve a User [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+
++ Response 200 (application/json)
+    + Body
+
+            {
+              "users": [
+                {
+                  "links": {
+                    "self": {
+                      "href": "https://api.photonews.me/users/541ceb1edf465e1b95000002"
+                    },
+                    "tokens": [
+                      "541ceb1edf465e1b95000003"
+                    ]
+                  },
+                  "name": "Bob of Wug",
+                  "email": "bob@2052.me",
+                  "avatar": "http://www.gravatar.com/avatar/bd0261dd040c14db68c8e8b9ce1dbb23?s=4"
+                }
+              ],
+              "linked": {
+                "tokens": [
+                  {
+                    "href": "https://api.photonews.me/token/541ceb1edf465e1b95000003",
+                    "id": "541ceb1edf465e1b95000003",
+                    "access_token": "53b345503e5e1bccf7d0d8d15480a2f1",
+                    "expires_at": "2014-10-19",
+                    "created_at": "2014-09-20T02:49:02.430Z",
+                    "updated_at": "2014-09-20T02:49:02.430Z"
+                  }
+                ]
+              }
+            }
+
+### Update a User [PUT]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+
+    + Body
+
+            {
+                "users": [ {
+                    "name": "Bob"
+                }]
+            }
+
++ Response 200 (application/json)
+    + Body
+
+            {
+              "users": [
+                {
+                  "links": {
+                    "self": {
+                      "href": "https://api.photonews.me/users/541ceb1edf465e1b95000002"
+                    },
+                    "tokens": [
+                      "541ceb1edf465e1b95000003"
+                    ]
+                  },
+                  "name": "Bob",
+                  "email": "bob@2052.me",
+                  "avatar": "http://www.gravatar.com/avatar/bd0261dd040c14db68c8e8b9ce1dbb23?s=4"
+                }
+              ],
+              "linked": {
+                "tokens": [
+                  {
+                    "href": "https://api.photonews.me/token/541ceb1edf465e1b95000003",
+                    "id": "541ceb1edf465e1b95000003",
+                    "access_token": "53b345503e5e1bccf7d0d8d15480a2f1",
+                    "expires_at": "2014-10-19",
+                    "created_at": "2014-09-20T02:49:02.430Z",
+                    "updated_at": "2014-09-20T02:49:02.430Z"
+                  }
+                ]
+              }
+            }
+
+### Remove a User [DELETE]
+
++ Response 204
+
+## Access Tokens [/auth/tokens]
+
+### List all Tokens [GET]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+    + Body
+
+            {}
+
++ Response 200 (application/json)
+    + Body
+
+            {
+              "tokens": [
+                {
+                  "href": "https://api.photonews.me/token/541cedabdf465e226f000002",
+                  "id": "541cedabdf465e226f000002",
+                  "access_token": "27ba5da7b7b9f8638a8e6e5758106791",
+                  "expires_at": "2014-10-19",
+                  "created_at": "2014-09-20T02:59:55.113Z",
+                  "updated_at": "2014-09-20T02:59:55.113Z"
+                },
+                {
+                  "href": "https://api.photonews.me/token/541cedabdf465e226f000003",
+                  "id": "541cedabdf465e226f000003",
+                  "access_token": "TestKey",
+                  "expires_at": "2014-10-19",
+                  "created_at": "2014-09-20T02:59:55.114Z",
+                  "updated_at": "2014-09-20T02:59:55.114Z"
+                }
+              ]
+            }
+
+### Create an Access Token [POST]
+
++ Request (application/json)
+    + Headers
+
+            X-Token: TokenID
+    + Body
+
+            {}
+
++ Response 201 (application/json)
+    + Body
+
+            {
+              "tokens": [
+                {
+                  "href": "https://api.photonews.me/token/541cedabdf465e226f000002",
+                  "id": "541cedabdf465e226f000002",
+                  "access_token": "27ba5da7b7b9f8638a8e6e5758106791",
+                  "expires_at": "2014-10-19",
+                  "created_at": "2014-09-20T02:59:55.113Z",
+                  "updated_at": "2014-09-20T02:59:55.113Z"
+                }
+              ]
+            }
+
+## Token [/tokens/{id}]
+
+A single Token object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Token to perform action with. Has example value.
+
+### Remove a Token [DELETE]
+
++ Response 204
